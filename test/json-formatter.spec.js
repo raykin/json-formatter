@@ -3,12 +3,12 @@
 describe('json-formatter', function () {
   var scope, $compile, $rootScope, element, fakeModule, JSONFormatterConfig;
 
-  function createDirective(key, open) {
+  function createDirective(key, open, title) {
     open = open === undefined ? 0 : open;
+    title = title === undefined ? '' : title;
     var elm;
-    var template = '<json-formatter json="' + key + '" open="' + open +
+    var template = '<json-formatter json="' + key + '" open="' + open + '" title="' + title +
       '"></json-formatter>';
-
     elm = angular.element(template);
     angular.element(document.body).prepend(elm);
     scope._null = null;
@@ -240,6 +240,12 @@ describe('json-formatter', function () {
           element = createDirective('simpleObject', 0);
           expect(element.find('.thumbnail-text').text().trim()).toBe('{me:1}');
         });
+
+        it('should render "simple object with title Mobile"', function () {
+          element = createDirective('simpleObject', 0, 'Mobile');
+          expect(element.find('.json-title').text().trim()).toBe('Mobile');
+        });
+
 
         it('should render "longer object"', function () {
           element = createDirective('longerObject', 0);

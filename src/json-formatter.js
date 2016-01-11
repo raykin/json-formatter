@@ -102,7 +102,7 @@ angular.module('jsonFormatter', ['RecursionHelper'])
     return value;
   }
 
-  function link(scope) {
+  function link(scope, elem, attrs) {
     scope.isArray = function () {
       return angular.isArray(scope.json);
     };
@@ -143,6 +143,9 @@ angular.module('jsonFormatter', ['RecursionHelper'])
         scope.isOpen && !scope.isArray();
     };
 
+    if (!!attrs.title) {
+      scope.title = attrs.title;
+    }
 
     // If 'open' attribute is present
     scope.isOpen = !!scope.open;
