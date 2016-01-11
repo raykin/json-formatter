@@ -102,7 +102,7 @@ angular.module('jsonFormatter', ['RecursionHelper'])
     return value;
   }
 
-  function link(scope) {
+  function link(scope, elem, attrs) {
     scope.isArray = function () {
       return angular.isArray(scope.json);
     };
@@ -124,6 +124,13 @@ angular.module('jsonFormatter', ['RecursionHelper'])
     scope.getConstructorName = function(){
       return getObjectName(scope.json);
     };
+    scope.getDisplayName = function() {
+      if (scope.isObject() && !!scope.title) {
+        return scope.title;
+      } else {
+        return getObjectName(scope.json);
+      }
+    };
 
     if (scope.type === 'string'){
 
@@ -143,7 +150,7 @@ angular.module('jsonFormatter', ['RecursionHelper'])
         scope.isOpen && !scope.isArray();
     };
 
-
+    scope.title = attrs.title;
     // If 'open' attribute is present
     scope.isOpen = !!scope.open;
     scope.toggleOpen = function () {

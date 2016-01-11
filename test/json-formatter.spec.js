@@ -3,12 +3,12 @@
 describe('json-formatter', function () {
   var scope, $compile, $rootScope, element, fakeModule, JSONFormatterConfig;
 
-  function createDirective(key, open) {
+  function createDirective(key, open, title) {
     open = open === undefined ? 0 : open;
+    title = title === undefined ? '' : title;
     var elm;
-    var template = '<json-formatter json="' + key + '" open="' + open +
+    var template = '<json-formatter json="' + key + '" open="' + open + '" title="' + title +
       '"></json-formatter>';
-
     elm = angular.element(template);
     angular.element(document.body).prepend(elm);
     scope._null = null;
@@ -219,7 +219,7 @@ describe('json-formatter', function () {
         expect(element.text()).toContain('Object');
       });
       it('should open when clicking on "Object"', function(){
-        element.find('.constructor-name').click();
+        element.find('.display-name').click();
         expect(element.find('.toggler').hasClass('open')).toBe(true);
       });
     });
@@ -239,6 +239,16 @@ describe('json-formatter', function () {
         it('should render "simple object"', function () {
           element = createDirective('simpleObject', 0);
           expect(element.find('.thumbnail-text').text().trim()).toBe('{me:1}');
+        });
+
+        it('should render "simple object with title Mobile"', function () {
+          element = createDirective('simpleObject', 0, 'Mobile');
+          expect(element.find('.display-name').text().trim()).toBe('Mobile');
+        });
+
+        it('should render "simple object with title blank string" with Object string', function () {
+          element = createDirective('simpleObject', 0, '  ');
+          expect(element.find('.display-name').text().trim()).toBe('Object');
         });
 
         it('should render "longer object"', function () {
